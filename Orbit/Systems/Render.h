@@ -4,7 +4,7 @@
 #include "ECS/include/ECS.h"
 #include "../Components/Renderable.h"
 #include "../Components/Transform.h"
-#include "../glm/glm.hpp"
+#include "../Dependencies/glm/glm.hpp"
 
 namespace Orbit
 {

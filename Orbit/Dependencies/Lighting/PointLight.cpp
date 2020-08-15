@@ -91,7 +91,7 @@ namespace Orbit
         this->shader.SetMat4("view", view);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, this->position);
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+        model = glm::scale(model, glm::vec3(0.5f)); // a smaller cube
         float angle = 20.0f;
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
         this->shader.SetMat4("model", model);

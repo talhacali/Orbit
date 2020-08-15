@@ -5,11 +5,11 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
-#include "../glm/glm.hpp"
-#include "../Camera/FlyCamera.h"
+#include "../Dependencies/glm/glm.hpp"
+#include "../Dependencies/Camera/FlyCamera.h"
 
 #include "ECS/include/ECS.h"
-#include "../Renderer/Material.h"
+#include "../Dependencies/Renderer/Material.h"
 
 #include "../Entities/Cube.h"
 #include "../Components/Renderable.h"
@@ -30,6 +30,9 @@ namespace Orbit
 		ECS::ComponentHandle transform;
 		ECS::SystemHandle render;
 
+		std::vector<ECS::EntityHandle> cubes;
+		std::vector<ECS::ComponentHandle> renderables;
+		std::vector<ECS::ComponentHandle> transforms;
 		std::vector<PointLight> pointLights;
 
 	private:

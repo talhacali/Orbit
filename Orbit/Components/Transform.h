@@ -1,6 +1,6 @@
 #pragma once
 #include "ECS/include/Component.h"
-#include "../glm/glm.hpp"
+#include "../Dependencies/glm/glm.hpp"
 
 namespace Orbit
 {

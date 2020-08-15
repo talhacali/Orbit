@@ -2,7 +2,7 @@
 
 #include "ECS/include/Component.h"
 #include <memory>
-#include "../Renderer/Material.h"
+#include "../Dependencies/Renderer/Material.h"
 
 namespace Orbit
 {
