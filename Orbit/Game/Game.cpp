@@ -1,5 +1,6 @@
 #include "Game.h"
 
+
 namespace Orbit
 {
     Game* gameInstance;
@@ -12,9 +13,9 @@ namespace Orbit
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
 
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
     void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+    void key_input(GLFWwindow* window);
 
 	void Game::Init()
 	{
@@ -38,7 +39,7 @@ namespace Orbit
         if (glewInit() != GLEW_OK)
             std::cout << "Error!" << std::endl;
 
-        glfwSetKeyCallback(window, key_callback);
+        //glfwSetKeyCallback(window, key_callback);
         glfwSetCursorPosCallback(window, mouse_callback);
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -46,6 +47,48 @@ namespace Orbit
 
         glEnable(GL_DEPTH_TEST);
 
+
+        glm::vec3 position(0.0f, 1.0f, -5.0f), position1(0.0f, 1.0f, -8.0f), rotation(0.0f, 0.0f, 1.0f);
+        glm::vec3 direction(-0.2f, -1.0f, -0.3f);
+        glm::vec3 ambient(0.05f, 0.05f, 0.05f);
+        glm::vec3 diffuse(0.4f, 0.4f, 0.4f);
+        glm::vec3 specular(0.5f, 0.5f, 0.5f);
+
+        Shader shader("Resources\\Shaders\\vertex_shader.glsl", "Resources\\Shaders\\fragment_shader.glsl");
+        Shader shaderLightSource("Resources\\Shaders\\light_vertex_shader.glsl", "Resources\\Shaders\\light_fragment_shader.glsl");
+        Texture diffuseMap("Resources\\Textures\\container2.png", GL_RGB, GL_RGBA, GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+        Texture specularMap("Resources\\Textures\\container2_specular.png", GL_RGB, GL_RGBA, GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+
+        DirectionalLight dirLight(direction, ambient, diffuse, specular);
+
+        glm::vec3 pointLightPositions[] = {
+        glm::vec3(0.5f, 0.2f, -1.0f),
+        glm::vec3(-2.0f,  1.0f, -5.0f),
+        };
+
+        camera = std::make_shared<FlyCamera>(glm::vec3(0.0f, 0.0f, 3.0f));
+
+        PointLight pointLight(shaderLightSource, pointLightPositions[0], ambient, diffuse, specular, 1.0f, 0.09f, 0.032f, camera);
+        PointLight pointLight1(shaderLightSource, pointLightPositions[1], ambient, diffuse, specular, 1.0f, 0.09f, 0.032f, camera);
+
+        pointLight.Init();
+        pointLight1.Init();
+
+        pointLights.push_back(pointLight);
+        pointLights.push_back(pointLight1);
+
+        Material material(shader, diffuseMap, specularMap, dirLight, pointLights, 2.0f);
+
+        cube = ecs.CreateEntity<Cube>();
+
+        renderable = ecs.CreateComponent<Renderable,Cube>(cube, material, 1280.0f, 720.0f, camera);
+        transform = ecs.CreateComponent<Transform, Cube>(cube, position, rotation, 2.0f);
+
+        render = ecs.CreateSystem<Render>(&ecs);
+
+        ecs.RegisterEntity<Render>(render, cube);
+
+        ecs.Init();
 	}
 
 	//Main loop of the game.
@@ -59,15 +102,18 @@ namespace Orbit
             deltaTime = currentFrame - lastFrame;
             lastFrame = currentFrame;
 
-            glfwPollEvents();
-
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+            key_input(window);
+            
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            ecs.Update(deltaTime);
+
+            pointLights[0].Render();
+            pointLights[1].Render();
 
             /* Swap front and back buffers */
             glfwSwapBuffers(window);
-
-            /* Poll for and process events */
             glfwPollEvents();
         }
 
@@ -75,21 +121,19 @@ namespace Orbit
 	}
 
 
-    
-
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+    void key_input(GLFWwindow* window)
     {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            gameInstance->camera.Move(CAMERA_MOVE_DIRECTION::FORWARD,10, deltaTime);
+            (*(gameInstance->camera)).Move(CAMERA_MOVE_DIRECTION::FORWARD, 5, deltaTime);
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            gameInstance->camera.Move(CAMERA_MOVE_DIRECTION::BACKWARD, 10, deltaTime);
+            (*(gameInstance->camera)).Move(CAMERA_MOVE_DIRECTION::BACKWARD, 5, deltaTime);
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            gameInstance->camera.Move(CAMERA_MOVE_DIRECTION::LEFT, 10, deltaTime);
+            (*(gameInstance->camera)).Move(CAMERA_MOVE_DIRECTION::LEFT, 5, deltaTime);
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            gameInstance->camera.Move(CAMERA_MOVE_DIRECTION::RIGHT, 10, deltaTime);
+            (*(gameInstance->camera)).Move(CAMERA_MOVE_DIRECTION::RIGHT, 5, deltaTime);
     }
 
     void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -108,9 +152,10 @@ namespace Orbit
         lastX = xpos;
         lastY = ypos;
 
-        std::cout << "mouse" << std::endl;
+        float sensitivity = 0.1f;
 
-        //gameInstance->camera.Rotate(
+       (*(gameInstance->camera)).Rotate(yoffset * sensitivity, xoffset * sensitivity);
+       
 
     }
     

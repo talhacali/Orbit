@@ -12,6 +12,7 @@ namespace Orbit
 		glm::mat4 GetViewMatrix();
 		void Move(CAMERA_MOVE_DIRECTION direction, float speed, float deltaTime);
 		void Rotate(CAMERA_ROTATE_DIRECTION direction, float offset);
+		void Rotate(float offsetPitch, float offsetYaw);
 	private:
 		void UpdateCamera();
 	};

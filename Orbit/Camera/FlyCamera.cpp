@@ -60,6 +60,19 @@ namespace Orbit
 		UpdateCamera();
 	}
 
+	void FlyCamera::Rotate( float offsetPitch,float offsetYaw)
+	{
+		pitch += offsetPitch;
+		yaw += offsetYaw;
+		
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+
+		UpdateCamera();
+	}
+
 	void FlyCamera::UpdateCamera()
 	{
 		glm::vec3 front;

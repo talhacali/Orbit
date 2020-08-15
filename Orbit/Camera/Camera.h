@@ -27,6 +27,7 @@ namespace Orbit
 		virtual glm::mat4 GetViewMatrix() = 0;
 		virtual void Move(CAMERA_MOVE_DIRECTION direction,float speed,float deltaTime) = 0;
 		virtual void Rotate(CAMERA_ROTATE_DIRECTION direction, float offset) = 0;
+		virtual void Rotate(float offsetPitch, float offsetYaw) = 0;
 		glm::vec3 position;
 	protected:
 		glm::vec3 frontVector;
