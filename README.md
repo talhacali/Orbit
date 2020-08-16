@@ -8,7 +8,7 @@ The demo has at least 4 different types of entities that rotate and components a
 I borrowed the rendering engine from my [tinyengine](https://github.com/talhacali/tinyengine). The game has phong lighting with a directional light and point lights, material with diffuse and specular maps, and a fly-like camera.
 
 ## Current status
-At the moment, there is one type of object which is a cube with container texture, there are Transform and Renderable components, and Render system. Lighting, and camera are up and running. There now is a light source cubes around it.
+At the moment, there is one type of object which is a cube with container texture, there are Transform and Renderable components, and Render system. Lighting, and camera are up and running. There now is a light source with cubes around it.
 
 ### Work in progress
 1. Add multiple light sources with multiple objects around.
