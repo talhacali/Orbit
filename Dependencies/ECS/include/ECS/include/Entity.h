@@ -7,7 +7,7 @@ namespace ECS
 	class EntityHandle
 	{
 	public:
-		EntityHandle():entityId(0),classID(0){}
+		EntityHandle() : entityId(0), classID(0){}
 		EntityHandle(unsigned int entityID_,unsigned int classID_) : entityId(entityID_), classID(classID_){}
 
 		EntityID entityId;

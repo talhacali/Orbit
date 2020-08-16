@@ -39,7 +39,6 @@ namespace Orbit
         if (glewInit() != GLEW_OK)
             std::cout << "Error!" << std::endl;
 
-        //glfwSetKeyCallback(window, key_callback);
         glfwSetCursorPosCallback(window, mouse_callback);
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
@@ -47,8 +46,8 @@ namespace Orbit
 
         glEnable(GL_DEPTH_TEST);
 
-
-        glm::vec3 position(0.0f, 1.0f, -4.0f), position1(0.0f, 1.0f, -10.0f), position2(-3.0f, 1.0f, -7.0f), position3(3.0f, 1.0f, -7.0f), rotation(0.0f, 0.0f, 1.0f);
+        glm::vec3 rotation(0.0f, 0.0f, 1.0f);
+        glm::vec3 positions[4] = { glm::vec3(0.0f, 1.0f, -4.0f),glm::vec3(0.0f, 1.0f, -10.0f),glm::vec3(-3.0f, 1.0f, -7.0f),glm::vec3(3.0f, 1.0f, -7.0f) };
         glm::vec3 direction(-0.2f, -1.0f, -0.3f);
         glm::vec3 ambient(0.05f, 0.05f, 0.05f);
         glm::vec3 diffuse(0.4f, 0.4f, 0.4f);
@@ -75,49 +74,22 @@ namespace Orbit
 
         Material material(shader, diffuseMap, specularMap, dirLight, pointLights, 2.0f);
 
-        ECS::EntityHandle cube1 = ecs.CreateEntity<Cube>();
-        ECS::EntityHandle cube2 = ecs.CreateEntity<Cube>();
-        ECS::EntityHandle cube3 = ecs.CreateEntity<Cube>();
-        ECS::EntityHandle cube4 = ecs.CreateEntity<Cube>();
-
-        cubes.push_back(cube1);
-        cubes.push_back(cube2);
-        cubes.push_back(cube3);
-        cubes.push_back(cube4);
-
-        ECS::ComponentHandle renderable1 = ecs.CreateComponent<Renderable, Cube>(cubes[0], material, 1280.0f, 720.0f, camera);
-        ECS::ComponentHandle renderable2 = ecs.CreateComponent<Renderable, Cube>(cubes[1], material, 1280.0f, 720.0f, camera);
-        ECS::ComponentHandle renderable3 = ecs.CreateComponent<Renderable, Cube>(cubes[2], material, 1280.0f, 720.0f, camera);
-        ECS::ComponentHandle renderable4 = ecs.CreateComponent<Renderable, Cube>(cubes[3], material, 1280.0f, 720.0f, camera);
-
-        renderables.push_back(renderable1);
-        renderables.push_back(renderable2);
-        renderables.push_back(renderable3);
-        renderables.push_back(renderable4);
-
-        ECS::ComponentHandle transform1 = ecs.CreateComponent<Transform, Cube>(cubes[0], position, rotation, 20.0f);
-        ECS::ComponentHandle transform2 = ecs.CreateComponent<Transform, Cube>(cubes[1], position1, rotation, 12.0f);
-        ECS::ComponentHandle transform3 = ecs.CreateComponent<Transform, Cube>(cubes[2], position2, rotation, 42.0f);
-        ECS::ComponentHandle transform4 = ecs.CreateComponent<Transform, Cube>(cubes[3], position3, rotation, 130.0f);
-        
-        transforms.push_back(transform1);
-        transforms.push_back(transform2);
-        transforms.push_back(transform3);
-        transforms.push_back(transform4);
-
-        /*
-        cube = ecs.CreateEntity<Cube>();
-
-        renderable = ecs.CreateComponent<Renderable,Cube>(cube, material, 1280.0f, 720.0f, camera);
-        transform = ecs.CreateComponent<Transform, Cube>(cube, position, rotation, 2.0f);
-        */
-
         render = ecs.CreateSystem<Render>(&ecs);
 
-        ecs.RegisterEntity<Render>(render, cubes[0]);
-        ecs.RegisterEntity<Render>(render, cubes[1]);
-        ecs.RegisterEntity<Render>(render, cubes[2]);
-        ecs.RegisterEntity<Render>(render, cubes[3]);
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<double> dist(-80.0, 80.0);
+
+        for (int i = 0; i < 4; i++)
+        {
+            ECS::EntityHandle cube = ecs.CreateEntity<Cube>();
+
+            ECS::ComponentHandle renderable = ecs.CreateComponent<Renderable, Cube>(cube.entityId, material, 1280.0f, 720.0f, camera);
+
+            ECS::ComponentHandle transform = ecs.CreateComponent<Transform, Cube>(cube.entityId, positions[i], rotation, dist(mt));
+
+            ecs.RegisterEntity<Render>(render.systemId, cube.entityId);
+        }
 
         ecs.Init();
 	}

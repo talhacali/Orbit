@@ -8,7 +8,7 @@ namespace ECS
 	class ComponentHandle
 	{
 	public:
-		ComponentHandle():componentId(0),classID(0){}
+		ComponentHandle() : componentId(0), classID(0){}
 		ComponentHandle(unsigned int componentID_,unsigned int classID_) : componentId(componentID_), classID(classID_){}
 		ComponentID componentId;
 		ClassID classID;
