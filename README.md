@@ -1,4 +1,4 @@
-7# Orbit
+# Orbit
 Orbit is a demo that I am developing to test and demonstrate my [entity component system implementation](https://github.com/talhacali/ECS). It is a quite simple game with
 multiple types of objects that orbit around light sources. Objects can be pushed out of their orbit by the player. The aim is to have many entities, components, systems and
 to push the limits of performance of my implementation. The version of C++ is 17 and I used OpenGL for rendering, stb for loading textures, glm as math library. 
