@@ -75,6 +75,8 @@ namespace Orbit
         Material material(shader, diffuseMap, specularMap, dirLight, pointLights, 2.0f);
 
         render = ecs.CreateSystem<Render>(&ecs);
+        movement = ecs.CreateSystem<Movement>(&ecs);
+
 
         std::random_device rd;
         std::mt19937 mt(rd());
@@ -88,7 +90,10 @@ namespace Orbit
 
             ECS::ComponentHandle transform = ecs.CreateComponent<Transform, Cube>(cube.entityId, positions[i], rotation, dist(mt));
 
+            ECS::ComponentHandle movable = ecs.CreateComponent<Movable, Cube>(cube.entityId,pointLightPositions[0], 1.0f);
+
             ecs.RegisterEntity<Render>(render.systemId, cube.entityId);
+            ecs.RegisterEntity<Movement>(movement.systemId, cube.entityId);
         }
 
         ecs.Init();

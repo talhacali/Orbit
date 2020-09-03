@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\Movable.cpp" />
     <ClCompile Include="Dependencies\Camera\Camera.cpp" />
     <ClCompile Include="Dependencies\Camera\FlyCamera.cpp" />
     <ClCompile Include="Components\Renderable.cpp" />
@@ -162,9 +163,11 @@
     <ClCompile Include="Dependencies\Renderer\Shader.cpp" />
     <ClCompile Include="Dependencies\Renderer\Texture.cpp" />
     <ClCompile Include="Dependencies\stb\stb_image.cpp" />
+    <ClCompile Include="Systems\Movement.cpp" />
     <ClCompile Include="Systems\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\Movable.h" />
     <ClInclude Include="Dependencies\Camera\Camera.h" />
     <ClInclude Include="Dependencies\Camera\FlyCamera.h" />
     <ClInclude Include="Components\Renderable.h" />
@@ -422,6 +425,7 @@
     <ClInclude Include="Dependencies\Renderer\Shader.h" />
     <ClInclude Include="Dependencies\Renderer\Texture.h" />
     <ClInclude Include="Dependencies\stb\stb_image.h" />
+    <ClInclude Include="Systems\Movement.h" />
     <ClInclude Include="Systems\Render.h" />
   </ItemGroup>
   <ItemGroup>

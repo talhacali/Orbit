@@ -15,7 +15,9 @@
 #include "../Entities/Cube.h"
 #include "../Components/Renderable.h"
 #include "../Components/Transform.h"
+#include "../Components/Movable.h"
 #include "../Systems/Render.h"
+#include "../Systems/Movement.h"
 
 namespace Orbit
 {
@@ -27,6 +29,7 @@ namespace Orbit
 
 		std::shared_ptr<Camera> camera;
 		ECS::SystemHandle render;
+		ECS::SystemHandle movement;
 		std::vector<PointLight> pointLights;
 
 	private:
