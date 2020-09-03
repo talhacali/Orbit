@@ -8,12 +8,12 @@ The demo has at least 4 different types of entities that rotate and components a
 I borrowed the rendering engine from my [tinyengine](https://github.com/talhacali/tinyengine). The game has phong lighting with a directional light and point lights, material with diffuse and specular maps, and a fly-like camera.
 
 ## Current status
-At the moment, there is one type of object which is a cube with container texture, there are Transform and Renderable components, and Render system. Lighting, and camera are up and running. There now is a light source with cubes around it.
+At the moment, there is one type of object which is a cube with container texture, there are Transform, Movable and Renderable components, and Render, Movement systems. Lighting, and camera are up and running. There now is a light source with cubes around it and movement system implements rotation around light source.
 
-![Current status](Orbit/status1.gif)
+![Current status](Orbit/status2.gif)
 
 ### Work in progress
 1. Add multiple light sources with multiple objects around.
 2. Add different object types and create entities for them.
 3. Add different light shapes.
-4. Implement the movement system.
+4. ~~Implement the movement system.~~
