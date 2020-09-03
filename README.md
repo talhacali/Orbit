@@ -10,6 +10,8 @@ I borrowed the rendering engine from my [tinyengine](https://github.com/talhacal
 ## Current status
 At the moment, there is one type of object which is a cube with container texture, there are Transform and Renderable components, and Render system. Lighting, and camera are up and running. There now is a light source with cubes around it.
 
+![Current status](Orbit/status1.gif)
+
 ### Work in progress
 1. Add multiple light sources with multiple objects around.
 2. Add different object types and create entities for them.
